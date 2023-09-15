@@ -13,21 +13,21 @@ from utils.thread import Executor
 current_config = manager.get_()
 
 
-class Server(QMainWindow):
+class Server(QMainWindow):  # 服务设置
 
     def __init__(self, installed: bool, latest_check: int, data_root: str, data_path: str):
         super().__init__()
         self.ui = Ui_Server()
         self.ui.setupUi(self)
-        self._latest_check = latest_check
-        self._installed = installed
+        self._latest_check = latest_check  # 最近一次检验时间
+        self._installed = installed  # 是否安装Label Studio
         self._data_root = pathlib.Path(data_root) if data_root else ""
         self._data_path = pathlib.Path(data_path) if data_path else ""
 
-        self._check_process = None
-        self._install_process = None
-        self._check_state = None
-        self._executor = None
+        self._check_process = None  # Label Studio检查线程
+        self._install_process = None  # 安装Label Studio线程
+        self._check_state = None  # install_process 在未检测到Label Studio时，在读取通道准备完成时，程序已经执行完毕，不会返回有效值
+        self._executor = None  # 生成json属于耗时的IO, 开辟新的线程执行json生成
         self.init_settings()
 
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
@@ -39,9 +39,9 @@ class Server(QMainWindow):
         self.ui.lineEdit_data_root.setText(str(self._data_root) if self._data_root else "")
         self.ui.lineEdit_data.setText(str(self._data_path) if self._data_path else "")
         current_timestamp = QDateTime.currentDateTime().toSecsSinceEpoch()
-        self.ui.pushButton_check.setEnabled(current_timestamp - self._latest_check > 7 * 24 * 60 * 60)
+        self.ui.pushButton_check.setEnabled(current_timestamp - self._latest_check > 7 * 24 * 60 * 60)  # 7天内不检查安装状态
         self.ui.pushButton_install.setEnabled(not self._installed)
-        self.ui.pushButton_generate.setEnabled(bool(self._data_root and self._data_path))
+        self.ui.pushButton_generate.setEnabled(bool(self._data_root and self._data_path))  # 数据路径合法时可以生成json
         self.ui.pushButton_data.setEnabled(
             bool(self._data_root and self._data_path and self._data_path.is_relative_to(self._data_root)))
 

@@ -12,7 +12,7 @@ default_config = {
     },
     "server": {
         "installed": False,
-        "latest_check": 1693985312,
+        "latest_check": 0,
         "data_root": "D:\\Data",
         "data_path": "D:\\Data",
     },

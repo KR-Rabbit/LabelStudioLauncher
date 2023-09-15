@@ -9,7 +9,7 @@ from utils.global_manager import manager
 current_config = manager.get_()
 
 
-class Common(QMainWindow):
+class Common(QMainWindow):  # 通用设置
     def __init__(self):
         super().__init__()
         self.ui = Ui_Common()
@@ -22,7 +22,7 @@ class Common(QMainWindow):
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
         self.show()
 
-    def init_setting(self):
+    def init_setting(self):  # 初始化设置
         global current_config
         main_config = current_config.get("main")
         close_type = main_config.get("close_type")
@@ -32,20 +32,20 @@ class Common(QMainWindow):
             self.ui.radioButton_min.setChecked(True)
         self.ui.checkBox.setChecked(main_config.get("second_confirm"))
 
-    def on_radio_select(self, radio):
+    def on_radio_select(self, radio):  # 选择关闭方式
         global current_config
         close_type = "close" if radio == self.ui.radioButton_close else "minimize"
         current_config.get("main").update(
             close_type=close_type
         )
 
-    def on_checked(self, status):
+    def on_checked(self, status):  # 选择二次确认
         global current_config
         current_config.get("main").update(
             second_confirm=status
         )
 
-    def save_setting(self):
+    def save_setting(self):  # 保存设置
         global current_config
         manager.save_(current_config)
 

@@ -40,7 +40,7 @@ class Launcher(QMainWindow):
         self.second_confirm = False
 
         self.system_tray = QSystemTrayIcon(QIcon(u":/main/launcher.ico"), self)
-
+        self.system_tray.activated.connect(self.tray_activated)
         self.menu = QMenu(self)
         self.action_show = QAction("隐藏界面", self)
         self.action_close = QAction("退出", self)
@@ -99,7 +99,7 @@ class Launcher(QMainWindow):
         global current_config
         python_path = utils.get_python_exe_path(current_config.get("conda"))
         if not python_path:
-            QMessageBox.information(self, "Tip", "请先进行P设置初始化", QMessageBox.StandardButton.Yes)
+            QMessageBox.information(self, "Tip", "请先进行Conda设置初始化", QMessageBox.StandardButton.Yes)
             self.ui.pushButton_start.setEnabled(True)
             return
         self.check_processor = QProcess()
@@ -149,10 +149,8 @@ class Launcher(QMainWindow):
         if self.isMinimized() or not self.isVisible():
             # 若是最小化，则先正常显示窗口，再变为活动窗口（暂时显示在最前面）
             self.show_normal()
-            self.action_show.setText("隐藏界面")
         else:
             self.hide_from_bar()
-            self.action_show.setText("显示界面")
 
     def close_(self):
         self.from_system_tray = True
@@ -164,11 +162,13 @@ class Launcher(QMainWindow):
         self.activateWindow()
         # self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint)
+        self.action_show.setText("隐藏界面")
         self.show()
 
     def hide_from_bar(self):
         self.showMinimized()
         self.setWindowFlags(Qt.WindowType.SplashScreen)
+        self.action_show.setText("显示界面")
         self.show()
 
     def closeEvent(self, event) -> None:
@@ -196,6 +196,14 @@ class Launcher(QMainWindow):
         else:
             self.close_window()
             event.accept()
+
+    def tray_activated(self, reason):  # 托盘双击
+        if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
+            if self.isMinimized():
+                print("close")
+                self.show_normal()
+            else:
+                self.hide_from_bar()
 
 
 if __name__ == '__main__':

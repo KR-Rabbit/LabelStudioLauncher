@@ -1,9 +1,8 @@
-from PySide6.QtWidgets import QMainWindow
-
+from menu import Base
 from ui.Abort_UI import Ui_Abort
 
 
-class Help(QMainWindow):
+class Help(Base):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Abort()

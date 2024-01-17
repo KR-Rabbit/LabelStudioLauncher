@@ -1,9 +1,10 @@
 import pathlib
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QButtonGroup
+from PySide6.QtWidgets import QFileDialog, QButtonGroup
 
 import utils
+from menu import Base
 from ui.Conda_UI import Ui_Conda
 from utils import format_conda_path, is_conda_path
 from utils.global_manager import manager
@@ -11,11 +12,11 @@ from utils.global_manager import manager
 current_config = manager.get_()
 
 
-class Conda(QMainWindow):  # Conda设置
+class Conda(Base):  # Conda设置
 
     def __init__(self, conda_root, conda_exec_path, env_name):
-        super().__init__()
 
+        super().__init__()
         self.ui = Ui_Conda()
         self.ui.setupUi(self)
         self.button_group = QButtonGroup()
@@ -53,10 +54,10 @@ class Conda(QMainWindow):  # Conda设置
                                                   "Conda (_conda.exe conda.bat)")
         self.check_conda(filename)
 
-    def update_env_name(self): # 更新虚拟环境名
+    def update_env_name(self):  # 更新虚拟环境名
         self._env_name = self.ui.comboBox_envs.currentText()
 
-    def get_envs(self): # 获取虚拟环境列表
+    def get_envs(self):  # 获取虚拟环境列表
         envs = [] if not "base" else ["base"]
         self.ui.comboBox_envs.clear()
         for file in self._conda_root.joinpath("envs").glob('*[!.]*'):
@@ -69,10 +70,10 @@ class Conda(QMainWindow):  # Conda设置
         if filename != "" and is_conda_path(filename):
             p = pathlib.Path(filename)
             if p.suffix == ".bat":
-                self._conda_root = p.parent.parent # conda根目录是bat的二级父目录
+                self._conda_root = p.parent.parent  # conda根目录是bat的二级父目录
                 exec_path = p.__str__()
             elif p.suffix == ".exe":
-                self._conda_root = p.parent # conda根目录是exe的父目录
+                self._conda_root = p.parent  # conda根目录是exe的父目录
                 exec_path = p.__str__()
             for env in self.get_envs():
                 self.ui.comboBox_envs.addItem(env)
@@ -107,4 +108,4 @@ class Conda(QMainWindow):  # Conda设置
 
     def closeEvent(self, event) -> None:
         self.save_setting()
-        event.accept()
+        super().closeEvent(event)

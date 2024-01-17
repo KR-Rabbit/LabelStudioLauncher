@@ -1,9 +1,10 @@
 import pathlib
 
 from PySide6.QtCore import QDateTime, Qt
-from PySide6.QtWidgets import QMainWindow, QMessageBox, QFileDialog
+from PySide6.QtWidgets import QMessageBox, QFileDialog
 
 import utils
+from menu import Base
 from ui.Server_UI import Ui_Server
 from utils import generate_json_file
 from utils.global_manager import manager
@@ -13,10 +14,11 @@ from utils.thread import Executor
 current_config = manager.get_()
 
 
-class Server(QMainWindow):  # 服务设置
+class Server(Base):  # 服务设置
 
     def __init__(self, installed: bool, latest_check: int, data_root: str, data_path: str):
         super().__init__()
+        # closed标志位用于判断CloseEvent事件的触发是否来自其他窗口，这个双触发会在主窗口进入托盘再次恢复后触发！bug???
         self.ui = Ui_Server()
         self.ui.setupUi(self)
         self._latest_check = latest_check  # 最近一次检验时间
@@ -160,4 +162,4 @@ class Server(QMainWindow):  # 服务设置
 
     def closeEvent(self, event) -> None:
         self.save_setting()
-        event.accept()
+        super().closeEvent(event)

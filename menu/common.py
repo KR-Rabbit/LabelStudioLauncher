@@ -1,15 +1,16 @@
 import sys
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QButtonGroup, QApplication
+from PySide6.QtWidgets import QButtonGroup, QApplication
 
+from menu import Base
 from ui.Common_UI import Ui_Common
 from utils.global_manager import manager
 
 current_config = manager.get_()
 
 
-class Common(QMainWindow):  # 通用设置
+class Common(Base):  # 通用设置
     def __init__(self):
         super().__init__()
         self.ui = Ui_Common()
@@ -50,6 +51,7 @@ class Common(QMainWindow):  # 通用设置
         manager.save_(current_config)
 
     def closeEvent(self, event) -> None:
+        self.closed = True
         self.save_setting()
         event.accept()
 

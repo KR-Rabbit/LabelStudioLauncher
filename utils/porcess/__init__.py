@@ -1,5 +1,7 @@
 from PySide6.QtCore import QProcess, QObject, Signal
-#QProcess封装
+
+
+# QProcess封装
 
 class Process(QObject):
     ready_signal = Signal(str)

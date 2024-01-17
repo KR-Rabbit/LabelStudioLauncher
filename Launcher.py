@@ -208,7 +208,6 @@ class Launcher(QMainWindow):
 
     def closeEvent(self, event) -> None:
         # 时间格式化
-        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), "main close")
         if self.from_system_tray:
             self.close_window()
             event.accept()
@@ -244,7 +243,6 @@ class Launcher(QMainWindow):
     def tray_activated(self, reason):  # 托盘双击
         if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
             if self.isMinimized():
-                print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), "tray_activated show_normal")
                 self.show_normal()
             else:
                 self.hide_from_bar()
@@ -259,7 +257,6 @@ class Launcher(QMainWindow):
             self.common_ui = None
         else:
             self.help_ui = None
-        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), "sub_window_closed", window_name)
         self.close_from_sub = True
 
 

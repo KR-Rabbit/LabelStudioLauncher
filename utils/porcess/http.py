@@ -37,7 +37,6 @@ class CORS_HTTPServer(QThread):
         self.server.directory = directory
 
     def run(self):
-        print("HTTP Server is running on http://{}:{}".format(*self.server.server_address))
         self.server.serve_forever()
 
     def stop(self):

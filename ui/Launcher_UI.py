@@ -3,18 +3,25 @@
 ################################################################################
 ## Form generated from reading UI file 'Launcher.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.6.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
-                            QSize, Qt)
-from PySide6.QtGui import (QAction, QIcon)
-from PySide6.QtWidgets import (QGroupBox, QHBoxLayout, QMenu, QMenuBar, QPushButton, QSizePolicy,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+                           QCursor, QFont, QFontDatabase, QGradient,
+                           QIcon, QImage, QKeySequence, QLinearGradient,
+                           QPainter, QPalette, QPixmap, QRadialGradient,
+                           QTransform)
+from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QMainWindow,
+                               QMenu, QMenuBar, QPushButton, QSizePolicy,
                                QSpacerItem, QStatusBar, QTextBrowser, QVBoxLayout,
                                QWidget)
 from . import ico_rc
+
 
 class Ui_LabelStudio(object):
     def setupUi(self, LabelStudio):
@@ -82,23 +89,6 @@ class Ui_LabelStudio(object):
 
         self.horizontalLayout_3.addWidget(self.groupBox_studio)
 
-        self.groupBox_http = QGroupBox(self.centralwidget)
-        self.groupBox_http.setObjectName(u"groupBox_http")
-        sizePolicy1.setHeightForWidth(self.groupBox_http.sizePolicy().hasHeightForWidth())
-        self.groupBox_http.setSizePolicy(sizePolicy1)
-        self.groupBox_http.setMinimumSize(QSize(360, 400))
-        self.horizontalLayout_2 = QHBoxLayout(self.groupBox_http)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.textBrowser_http = QTextBrowser(self.groupBox_http)
-        self.textBrowser_http.setObjectName(u"textBrowser_http")
-        sizePolicy1.setHeightForWidth(self.textBrowser_http.sizePolicy().hasHeightForWidth())
-        self.textBrowser_http.setSizePolicy(sizePolicy1)
-        self.textBrowser_http.setOpenExternalLinks(True)
-
-        self.horizontalLayout_2.addWidget(self.textBrowser_http)
-
-        self.horizontalLayout_3.addWidget(self.groupBox_http)
-
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         LabelStudio.setCentralWidget(self.centralwidget)
@@ -139,15 +129,13 @@ class Ui_LabelStudio(object):
 
     def retranslateUi(self, LabelStudio):
         LabelStudio.setWindowTitle(QCoreApplication.translate("LabelStudio", u"LabelStudio", None))
-        self.actionSelectConda.setText(
-            QCoreApplication.translate("LabelStudio", u"\u9009\u62e9conda\u73af\u5883", None))
+        self.actionSelectConda.setText(QCoreApplication.translate("LabelStudio", u"\u9009\u62e9conda\u73af\u5883", None))
         self.actionSetServer.setText(QCoreApplication.translate("LabelStudio", u"\u670d\u52a1\u8bbe\u7f6e", None))
         self.actionAbourt.setText(QCoreApplication.translate("LabelStudio", u"\u5173\u4e8e", None))
         self.actionCommon.setText(QCoreApplication.translate("LabelStudio", u"\u5e38\u89c4\u8bbe\u7f6e", None))
         self.actionAbort.setText(QCoreApplication.translate("LabelStudio", u"\u5173\u4e8e", None))
         self.pushButton_start.setText(QCoreApplication.translate("LabelStudio", u"\u542f\u52a8", None))
         self.groupBox_studio.setTitle(QCoreApplication.translate("LabelStudio", u"Label Studio", None))
-        self.groupBox_http.setTitle(QCoreApplication.translate("LabelStudio", u"HTTP", None))
         self.menuSetting.setTitle(QCoreApplication.translate("LabelStudio", u"\u8bbe\u7f6e", None))
         self.menu.setTitle(QCoreApplication.translate("LabelStudio", u"\u5e2e\u52a9", None))
     # retranslateUi

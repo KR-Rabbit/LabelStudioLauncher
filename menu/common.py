@@ -51,9 +51,8 @@ class Common(Base):  # 通用设置
         manager.save_(current_config)
 
     def closeEvent(self, event) -> None:
-        self.closed = True
         self.save_setting()
-        event.accept()
+        super().closeEvent(event)
 
 
 if __name__ == '__main__':

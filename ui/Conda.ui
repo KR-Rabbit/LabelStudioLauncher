@@ -13,6 +13,12 @@
     <height>386</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Codna</string>
   </property>
@@ -21,7 +27,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>60</y>
+      <y>30</y>
       <width>101</width>
       <height>25</height>
      </rect>
@@ -34,7 +40,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>60</y>
+      <y>30</y>
       <width>256</width>
       <height>25</height>
      </rect>
@@ -59,7 +65,7 @@
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>60</y>
+      <y>30</y>
       <width>80</width>
       <height>25</height>
      </rect>
@@ -84,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>160</y>
+      <y>120</y>
       <width>221</width>
       <height>25</height>
      </rect>
@@ -94,7 +100,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>120</y>
+      <y>80</y>
       <width>95</width>
       <height>20</height>
      </rect>
@@ -110,7 +116,7 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>120</y>
+      <y>80</y>
       <width>95</width>
       <height>20</height>
      </rect>
@@ -123,7 +129,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>160</y>
+      <y>120</y>
       <width>100</width>
       <height>25</height>
      </rect>
@@ -154,7 +160,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>160</y>
+      <y>120</y>
       <width>160</width>
       <height>25</height>
      </rect>
@@ -185,7 +191,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>200</y>
+      <y>160</y>
       <width>100</width>
       <height>25</height>
      </rect>
@@ -216,7 +222,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>200</y>
+      <y>160</y>
       <width>80</width>
       <height>22</height>
      </rect>
@@ -276,6 +282,41 @@
      </property>
     </item>
    </widget>
+   <widget class="QPushButton" name="create_btn">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>160</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>确定</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>200</y>
+      <width>481</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="openExternalLinks">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -323,9 +364,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>create_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>Conda</receiver>
+   <slot>create_env()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>528</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>select_conda()</slot>
   <slot>update_env_name()</slot>
+  <slot>create_env()</slot>
  </slots>
 </ui>

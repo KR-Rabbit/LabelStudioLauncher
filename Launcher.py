@@ -1,9 +1,7 @@
 import pathlib
-import sys
-import time
 
 from PySide6.QtCore import QProcess, Slot
-from PySide6.QtGui import Qt, QIcon, QAction
+from PySide6.QtGui import Qt, QIcon, QAction, QGuiApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, QSystemTrayIcon, QMenu
 
 import utils
@@ -11,16 +9,15 @@ from menu.common import Common
 from menu.conda import Conda
 from menu.help import Help
 from menu.server import Server
-from ui import ico_rc
 from ui.Launcher_UI import Ui_LabelStudio
 from utils.global_manager import manager
-from utils.porcess import Process
-from utils.porcess.http import CORS_HTTPServer
+from utils.http.http import CORS_HTTPServer
+from utils import DEFAULT_CONFIG
 
 current_config = manager.get_()
-name = ico_rc.qt_resource_name
 
 
+# noinspection PyUnresolvedReferences
 class Launcher(QMainWindow):
     from_system_tray = False
 
@@ -152,17 +149,46 @@ class Launcher(QMainWindow):
                 self.ui.pushButton_start.setEnabled(True)
                 QMessageBox.information(self, "Tip", "请先设置数据目录", QMessageBox.StandardButton.Yes)
                 return
-            self.studio_processor = Process(utils.get_python_exe_path(current_config.get("conda")).__str__(),
-                                            "-m label_studio.server".split())
-            self.studio_processor.start()
+            self.studio_processor = QProcess()
+            self.studio_processor.setProgram(utils.get_python_exe_path(current_config.get("conda")).__str__())
+            self.studio_processor.setArguments("-m label_studio.server".split())
             self.studio_processor.readyRead.connect(
-                lambda: self.ui.textBrowser_studio.append(self.studio_processor.info))
-            self.http_server = CORS_HTTPServer(directory=data_root)
-            self.http_server.start()
-            self.ui.pushButton_start.setEnabled(False)
-            self.ui.pushButton_start.setText("服务运行中...")
+                lambda: self.ui.textBrowser_studio.append(
+                    self.studio_processor.readAllStandardOutput().data().strip().decode()))
+            self.studio_processor.start()
+            http_address = current_config.get("server", DEFAULT_CONFIG.get("server")).get("http_address",
+                                                                                          DEFAULT_CONFIG.get(
+                                                                                              "server").get(
+                                                                                              "http_address"))
+            ip = http_address.get("ip", "localhost")
+            port = http_address.get("port", 8000)
+            try:
+                self.http_server = CORS_HTTPServer(directory=data_root, ip=ip, port=port)
+                self.http_server.started_signal.connect(self.http_server_started)
+            except OSError:
+                QMessageBox.information(self, "Tip", "启动HTTP服务失败", QMessageBox.StandardButton.Yes)
+                self.ui.pushButton_start.setEnabled(True)
+                self.studio_processor.close()
+            else:
+                self.http_server.start()
+                self.ui.pushButton_start.setEnabled(False)
+                self.ui.pushButton_start.setText("服务运行中...")
         self.check_processor.close()
         self.check_processor = None
+
+    @Slot(str)
+    def http_server_started(self, address):
+        port = address.split(":")[-1]
+        global current_config
+        config_port = current_config.get("server").get("http_address").get("port", 8000)
+        if port != str(config_port):
+            QMessageBox.information(self, "Tip",
+                                    f"HTTP服务运行在{address},与配置端口{config_port}不一致\n"
+                                    f"请检查服务器端口与JSON文件配置是否一致",
+                                    QMessageBox.StandardButton.Yes)
+            return
+        self.statusBar().showMessage(f"HTTP服务启动成功,地址为{address}")
+        QGuiApplication.clipboard().setText(address)
 
     def close_processor(self):
         if self.check_processor:
@@ -261,6 +287,6 @@ class Launcher(QMainWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication()
     launcher = Launcher()
-    sys.exit(app.exec())
+    app.exec()
